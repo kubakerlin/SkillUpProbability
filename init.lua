@@ -61,16 +61,18 @@ function core:init(event)
 
 	--[[ Account for Enchanting and Poisons, because they use the Craft API and not the TradeSkill API. May or may not become
 	-- deprecated in WOTLK Classic ]]--
-	hooksecurefunc('CraftFrame_Update', function()
-		if CraftFrame:IsShown() then
-			local profName, craftLevel, maxLevel = GetCraftDisplaySkillLine()
-			if maxLevel ~= craftLevel then
-				for i=1, CRAFTS_DISPLAYED do
-					core:UpdateCraftSkill(i, profName)
+	if _G.CraftFrame_Update then
+		hooksecurefunc('CraftFrame_Update', function()
+			if CraftFrame:IsShown() then
+				local profName, craftLevel, maxLevel = GetCraftDisplaySkillLine()
+				if maxLevel ~= craftLevel then
+					for i=1, CRAFTS_DISPLAYED do
+						core:UpdateCraftSkill(i, profName)
+					end
 				end
 			end
-		end
-	end)
+		end)
+	end
 
 	--[[ Questie in WOTLK has a function in its file QuestieProfessions.lua called "Update" which is called on the event
 	-- SKILL_LINES_CHANGED. This overwrites the changes made by this addon's hook on TradeSkillFrame_Update and creates an unpleasant
